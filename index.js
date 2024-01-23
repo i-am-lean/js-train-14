@@ -416,36 +416,39 @@ console.log(getFormattedTime(new Date("2023-12-25T09:30:00.000Z")));
  */
 function getAge(birthDate) {
   // Перевірка, чи є вхідне значення об'єктом Date,це можно зробити перевіривши чи є birthDate.getTime по типу функція .
-  // Якщо birthDate не є об'єктом Date, повертаємо рядок
-  // "Помилка: вхідне значення має бути об'єктом Date"
-  if (typeof birthDate.getTime !== "function") {
+  if (!(typeof birthDate.getTime === "function")) {
+    // Якщо birthDate не є об'єктом Date, повертаємо рядок
+    // "Помилка: вхідне значення має бути об'єктом Date"
     return "Помилка: вхідне значення має бути об'єктом Date";
   }
 
   // Отримання поточної дати.
-  const today = new Date();
-  // Вираховування різниці років між поточною датою та датою народження.
-  const ageInYears = today.getFullYear() - birthDate.getFullYear();
+  let currentDate = new Date();
+
+  // Вираховування різницю років між поточною датою та датою народження.
+  let age = currentDate.getFullYear() - birthDate.getFullYear();
+
   // Перевірка, чи поточна дата ще не пройшла день народження, тобто поточний місяць має бути менше, а якщо дорівнює дата має бути менше.
-  const currentMonth = today.getMonth();
-  const birthMonth = birthDate.getMonth();
-  const currentDate = today.getDate();
-  const birthdayDate = birthDate.getDate();
-  if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDate < birthdayDate)) {
+  if (
+    currentDate.getMonth() < birthDate.getMonth() ||
+    (currentDate.getMonth() === birthDate.getMonth() &&
+      currentDate.getDate() < birthDate.getDate())
+  ) {
     // Якщо день народження ще не пройшов, вік потрібно зменшити на 1.
-    ageInYears-- ;
+    age--;
   }
 
   // Збереження дати народження для виведення в форматі ISO.
-  const originalDate = birthDate.toISOString();
+  let formattedBirthDate = birthDate.toISOString();
 
   // Повертаємо об'єкт з датою народження та обчисленим віком.
-  return { birthDate: originalDate, age };
+  return { birthDate: formattedBirthDate, age };
 }
 console.log("Завдання: 11 ==============================");
 
 console.log(getAge(new Date("1990-05-15")));
-//Виведе { birthDate: '1990-05-15T00:00:00.000Z', age: 33 }
+//Виведе { birthDate: '1990-05-15T00:00:00.000Z', age: 33 } 
+
 
 // Завдання 12
 /**
@@ -465,9 +468,33 @@ function compareDates(date1, date2) {
   // Перевірка, чи є вхідні значення об'єктами Date.
   // Якщо date1 або date2 не є об'єктами Date, повертаємо рядок
   // "Помилка: вхідне значення має бути об'єктом Date"
+  if (typeof date1.getTime !== "function" || typeof date2.getTime !== "function") {
+    return "Помилка: вхідне значення має бути об'єктом Date";
+  }
+
   // Порівняння дат і отримання результату порівняння: -1, якщо date1 < date2, 0, якщо date1 === date2, 1, якщо date1 > date2.
+  let comparisonResult = '';
+
+  if (date1 < date2) {
+    comparisonResult = -1;
+  } else if (date1 === date2) {
+    comparisonResult = -1;
+  } else if (date1 > date2) {
+    comparisonResult = 1;
+  }
+  
+  
+
   // Збереження дат для виведення  в форматі ISO.
+  const originalDate1 = date1.toISOString();
+  const originalDate2 = date2.toISOString();
+
   // Повертаємо об'єкт з порівнюваними датами та результатом порівняння.
+  return {
+    originalDate1,
+    originalDate2,
+    comparisonResult,
+  };
 }
 console.log("Завдання: 12 ==============================");
 
@@ -497,11 +524,30 @@ function getDaysDifference(startDate, endDate) {
   // Перевірка, чи є вхідні значення об'єктами Date.
   // Якщо startDate або endDate не є об'єктами Date, повертаємо рядок
   // "Помилка: вхідне значення має бути об'єктом Date"
+  if (typeof startDate.getTime !== "function" || typeof endDate.getTime !== "function") {
+    return "Помилка: вхідне значення має бути об'єктом Date";
+  }
+
   // Отримання часу в мілісекундах для початкової та кінцевої дати.
+  const startDateInMilliseconds = startDate.getTime();
+  const endDateInMilliseconds = endDate.getTime();
+
   // Різниця в мілісекундах між двома датами.
+  const differenceInMilliseconds = endDateInMilliseconds - startDateInMilliseconds;
+
   // Перетворення різниці в мілісекундах у дні поділивши мілісекунди на (1000 * 60 * 60 * 24).
+  const daysDifference = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+
   // Збереження дат для виведення в форматі ISO.
+  const originalStartDate = startDate.toISOString();
+  const originalEndDate = endDate.toISOString();
+
   // Повертаємо об'єкт з початковою та кінцевою датами та різницею в днях.
+  return {
+    originalStartDate,
+    originalEndDate,
+    daysDifference,
+  };
 }
 console.log("Завдання: 13 ==============================");
 
